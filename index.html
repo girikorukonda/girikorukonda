@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        td {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 24px;
+            border: 1px solid #000;
+        }
+        td:hover {
+            background-color: #ddd;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tic-Tac-Toe</h1>
+    <table>
+        <tr>
+            <td onclick="makeMove(0, 0)"></td>
+            <td onclick="makeMove(0, 1)"></td>
+            <td onclick="makeMove(0, 2)"></td>
+        </tr>
+        <tr>
+            <td onclick="makeMove(1, 0)"></td>
+            <td onclick="makeMove(1, 1)"></td>
+            <td onclick="makeMove(1, 2)"></td>
+        </tr>
+        <tr>
+            <td onclick="makeMove(2, 0)"></td>
+            <td onclick="makeMove(2, 1)"></td>
+            <td onclick="makeMove(2, 2)"></td>
+        </tr>
+    </table>
+
+    <p id="status"></p>
+
+    <script>
+        var board = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+        ];
+        var currentPlayer = "X";
+
+        function makeMove(row, col) {
+            if (board[row][col] === "") {
+                board[row][col] = currentPlayer;
+                document.querySelectorAll("tr")[row].children[col].textContent = currentPlayer;
+                if (checkWinner()) {
+                    document.getElementById("status").textContent = currentPlayer + " wins!";
+                    disableBoard();
+                } else if (isBoardFull()) {
+                    document.getElementById("status").textContent = "It's a tie!";
+                } else {
+                    currentPlayer = currentPlayer === "X" ? "O" : "X";
+                }
+            }
+        }
+
+        function checkWinner() {
+            for (var i = 0; i < 3; i++) {
+                if (board[i][0] === currentPlayer && board[i][1] === currentPlayer && board[i][2] === currentPlayer) {
+                    return true;
+                }
+                if (board[0][i] === currentPlayer && board[1][i] === currentPlayer && board[2][i] === currentPlayer) {
+                    return true;
+                }
+            }
+            if (board[0][0] === currentPlayer && board[1][1] === currentPlayer && board[2][2] === currentPlayer) {
+                return true;
+            }
+            if (board[0][2] === currentPlayer && board[1][1] === currentPlayer && board[2][0] === currentPlayer) {
+                return true;
+            }
+            return false;
+        }
+
+        function isBoardFull() {
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    if (board[i][j] === "") {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function disableBoard() {
+            var cells = document.querySelectorAll("td");
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].onclick = null;
+            }
+        }
+    </script>
+
+</body>
+</html>
